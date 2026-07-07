@@ -13,10 +13,17 @@ async function register(req, res) {
         maxAge: 15 * 60 * 1000,
     });
 
+    res.cookie("refreshToken", result.refreshToken, {
+        httpOnly: true,
+        secure: false,
+        sameSite: "lax",
+        maxAge: 7 * 24 * 60 * 60 * 1000,
+    });
+
     return res.status(HTTP_STATUS.CREATED).json({
         success: true,
         message: "User registered successfully",
-        data: result,
+        data: result.user,
     });
 }
 
@@ -30,15 +37,22 @@ async function login(req, res) {
         maxAge: 15 * 60 * 1000,
     });
 
+    res.cookie("refreshToken", result.refreshToken, {
+        httpOnly: true,
+        secure: false,
+        sameSite: "lax",
+        maxAge: 7 * 24 * 60 * 60 * 1000,
+    });
+
     return res.status(HTTP_STATUS.OK).json({
         success: true,
         message: "Logged in successfully",
-        data: result,
+        data: result.user,
     });
 }
 
 async function refresh(req, res) {
-    const { refreshToken } = req.body;
+    const { refreshToken } = req.cookies;
 
     const result = await authService.refresh(refreshToken);
 
@@ -47,6 +61,13 @@ async function refresh(req, res) {
         secure: false,
         sameSite: "lax",
         maxAge: 15 * 60 * 1000,
+    });
+
+    res.cookie("refreshToken", result.refreshToken, {
+        httpOnly: true,
+        secure: false,
+        sameSite: "lax",
+        maxAge: 7 * 24 * 60 * 60 * 1000,
     });
 
     return res.status(HTTP_STATUS.OK).json({
@@ -60,6 +81,9 @@ async function logout(req, res) {
     const { id } = req.user;
 
     await authService.logout(id);
+
+    res.clearCookie("accessToken");
+    res.clearCookie("refreshToken");
 
     return res.status(HTTP_STATUS.OK).json({
         success: true,
