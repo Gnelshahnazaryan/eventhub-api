@@ -1,5 +1,6 @@
 const router = require("express").Router();
 const eventController = require("../controllers/event.controller.js");
+const reviewController = require("../controllers/review.controller.js");
 
 const asyncHandler = require("../utils/asyncHandler.js");
 const validate = require("../middlewares/validate.middleware.js");
@@ -7,6 +8,7 @@ const authenticate = require("../middlewares/auth.middleware.js");
 const authorize = require("../middlewares/authorize.middleware.js");
 
 const { createEventSchema, updateEventSchema } = require("../validators/event.validator.js");
+const { createReviewSchema } = require("../validators/review.validator.js");
 
 const ROLES = require("../constants/roles.constants.js");
 
@@ -48,6 +50,15 @@ router.delete(
     authenticate,
     authorize(ROLES.MEMBER),
     asyncHandler(eventController.leaveEvent)
+);
+
+router.get("/:eventId/reviews", authenticate, asyncHandler(reviewController.getEventReviews));
+
+router.post(
+    "/:eventId/reviews",
+    authenticate,
+    validate(createReviewSchema),
+    asyncHandler(reviewController.createReview)
 );
 
 module.exports = router;
