@@ -1,8 +1,9 @@
 const express = require("express");
 
-const cookieParser = require("cookie-parser");
 const cors = require("cors");
 const helmet = require("helmet");
+const morgan = require("morgan");
+const cookieParser = require("cookie-parser");
 
 const errorHandler = require("./middlewares/error.middleware.js");
 const notFound = require("./middlewares/notFound.middleware.js");
@@ -19,6 +20,8 @@ app.use(
         credentials: true,
     })
 );
+
+app.use(morgan("dev"));
 
 app.use(express.json());
 app.use(cookieParser());
