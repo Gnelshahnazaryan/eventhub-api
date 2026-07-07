@@ -4,7 +4,6 @@ const AppError = require("../utils/AppError.js");
 const HTTP_STATUS = require("../constants/http-status.constants.js");
 const ERROR_CODES = require("../constants/error-codes.constants.js");
 
-
 async function createEvent(organizerId, eventData) {
     const event = await eventRepo.createEvent({
         organizer_id: organizerId,
@@ -26,7 +25,7 @@ async function getEventById(eventId) {
 
 async function updateEvent(eventId, organizerId, updateData) {
     const event = await eventRepo.findEventById(eventId);
-    
+
     if (!event) {
         throw new AppError("Event not found", HTTP_STATUS.NOT_FOUND, ERROR_CODES.EVENT_NOT_FOUND);
     }
@@ -89,7 +88,11 @@ async function leaveEvent(eventId, memberId) {
     const attendance = await eventRepo.findAttendance(memberId, eventId);
 
     if (!attendance) {
-        throw new AppError("Attendance not found", HTTP_STATUS.NOT_FOUND, ERROR_CODES.NOT_FOUND);
+        throw new AppError(
+            "Attendance not found",
+            HTTP_STATUS.NOT_FOUND,
+            ERROR_CODES.ATTENDANCE_NOT_FOUND
+        );
     }
 
     await eventRepo.deleteAttendance(memberId, eventId);

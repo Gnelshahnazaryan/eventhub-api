@@ -1,5 +1,6 @@
 const AppError = require("../utils/AppError.js");
 const HTTP_STATUS = require("../constants/http-status.constants.js");
+const ERROR_CODES = require("../constants/error-codes.constants.js");
 
 function validate(schema) {
     return function (req, res, next) {
@@ -7,7 +8,11 @@ function validate(schema) {
 
         if (!result.success) {
             return next(
-                new AppError("Validation Error", HTTP_STATUS.BAD_REQUEST, "VALIDATION_ERROR")
+                new AppError(
+                    "Validation Error",
+                    HTTP_STATUS.BAD_REQUEST,
+                    ERROR_CODES.VALIDATION_ERROR
+                )
             );
         }
 

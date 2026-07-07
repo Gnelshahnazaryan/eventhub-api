@@ -8,7 +8,6 @@ const {
 } = require("../utils/token.js");
 const { hashToken, compareToken } = require("../utils/token-hash.js");
 
-const ENV = require("../config/env.js");
 const HTTP_STATUS = require("../constants/http-status.constants.js");
 const ERROR_CODES = require("../constants/error-codes.constants.js");
 

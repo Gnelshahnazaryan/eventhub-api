@@ -1,7 +1,7 @@
 const authService = require("../services/auth.service.js");
 
 const HTTP_STATUS = require("../constants/http-status.constants.js");
-const ERROR_CODES = require("../constants/error-codes.constants.js");
+
 
 async function register(req, res) {
     const result = await authService.register(req.body);

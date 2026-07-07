@@ -45,7 +45,7 @@ async function getReviewById(reviewId) {
     const review = await reviewRepo.findReviewById(reviewId);
 
     if (!review) {
-        throw new AppError("Review not found", HTTP_STATUS.NOT_FOUND, "REVIEW_NOT_FOUND");
+        throw new AppError("Review not found", HTTP_STATUS.NOT_FOUND, ERROR_CODES.REVIEW_NOT_FOUND);
     }
 
     return review;
@@ -67,7 +67,7 @@ async function updateReview(userId, reviewId, updateData) {
     const review = await reviewRepo.findReviewById(reviewId);
 
     if (!review) {
-        throw new AppError("Review not found", HTTP_STATUS.NOT_FOUND, "REVIEW_NOT_FOUND");
+        throw new AppError("Review not found", HTTP_STATUS.NOT_FOUND, ERROR_CODES.REVIEW_NOT_FOUND);
     }
 
     if (!review.user_id.equals(userId)) {
@@ -83,7 +83,7 @@ async function deleteReview(userId, reviewId) {
     const review = await reviewRepo.findReviewById(reviewId);
 
     if (!review) {
-        throw new AppError("Review not found", HTTP_STATUS.NOT_FOUND, "REVIEW_NOT_FOUND");
+        throw new AppError("Review not found", HTTP_STATUS.NOT_FOUND, ERROR_CODES.REVIEW_NOT_FOUND);
     }
 
     if (!review.user_id.equals(userId)) {
